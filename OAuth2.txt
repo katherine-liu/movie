@@ -1,0 +1,48 @@
+OAuth:
+
+#Preparation:
+* api key:
+* secret:
+* auth address:
+    https://www.douban.com/service/auth2/auth
+* token address:
+    https://www.douban.com/service/auth2/token
+#Implement:
+
+##1 To get authorization_code
+    Method: GET
+    Address:
+      https://www.douban.com/service/auth2/auth
+        ?client_id=
+        &redirect_uri=http://ninghao.net
+        &response_type=code
+        &scope=douban_basic_common,movie_basic,movie_basic_r,movie_basic_r
+
+    authorization_code:
+      Can be get from the callback uri, like: http://ninghao.net/code=1234567890
+
+##2 To get access_token
+    Method: POST
+    Address:
+      https://www.douban.com/service/auth2/auth
+        ?client_id
+        &client_secret=
+        &redirect_uri=http://ninghao.net
+        &grant_type=authorization_code / &grant_type=refresh_token
+        $code=1234567890
+
+    access_token:
+    {
+      "access_token": "ACCESS_TOKEN",
+      "douban_user_name": "katherine",
+      "douban_user_id": "001",
+      "douban_user_id": 604800,
+      "refresh_token": ""
+    }
+
+##3 Request API
+    Address:
+      https://api.douban.com/v2/user/~me
+
+    Header:
+      Authorization Bearer ACCESS_TOKEN
